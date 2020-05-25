@@ -51,7 +51,7 @@ module.exports = {
     res.json({ id });
   },
 
-  // atualiza um evento no banco. o evento vem no corpo (body) da requisicao
+  // atualiza um evento no banco.
   async update(req, res) {
     const { id } = req.params;
 
@@ -77,6 +77,7 @@ module.exports = {
     res.json(evento_atualizado);
   },
 
+  // exclui um evento do banco de dados
   async delete(req, res) {
     const { id } = req.params;
 

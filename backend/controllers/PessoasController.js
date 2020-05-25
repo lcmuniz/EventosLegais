@@ -26,6 +26,7 @@ module.exports = {
     res.json(pessoa);
   },
 
+  // cria uma pessoa no banco de dados
   async create(req, res) {
     const pessoa = req.body;
 
@@ -47,6 +48,7 @@ module.exports = {
     res.json({ id });
   },
 
+  /// atualiza uma pessoa no banco de dados
   async update(req, res) {
     const { id } = req.params;
 
@@ -71,6 +73,7 @@ module.exports = {
     res.json(nova_pessoa);
   },
 
+  // exclui uma pessoa no banco de dados
   async delete(req, res) {
     const { id } = req.params;
 

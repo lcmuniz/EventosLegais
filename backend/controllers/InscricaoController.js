@@ -1,6 +1,7 @@
 const connection = require("../connection");
 
 module.exports = {
+  // inscrive uma pessoa em um evento
   async register(req, res) {
     const { id_evento, id_pessoa } = req.body;
 
