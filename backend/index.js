@@ -1,12 +1,16 @@
-const express = require("express");
+const express = require('express')
 
-const routes = require("./routes");
+const cors = require('cors')
 
-const app = express();
+const routes = require('./routes')
 
-app.use(express.json());
+const app = express()
 
-app.use(routes);
+app.use(cors())
 
-console.log("Servidor iniciou na porta 3333");
-app.listen(3333);
+app.use(express.json())
+
+app.use(routes)
+
+console.log('Servidor iniciou na porta 3333')
+app.listen(3333)
