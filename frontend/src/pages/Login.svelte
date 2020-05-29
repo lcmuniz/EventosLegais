@@ -3,6 +3,8 @@
   import sha256 from "js-sha256";
   import { navigate } from "svelte-routing";
 
+  const logo = "/assets/celebracao.svg";
+
   let email = "";
   let senha = "";
   let erro = "";
@@ -39,10 +41,15 @@
   .erro {
     margin-top: 20px;
   }
+  .logo {
+    margin-top: 80px;
+    margin-bottom: 10px;
+  }
 </style>
 
 <div class="container main">
 
+  <img class="logo" src={logo} alt="Logo" width="100" />
   <h1>Eventos Legais</h1>
 
   <div class="card">
