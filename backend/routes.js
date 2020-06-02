@@ -13,6 +13,7 @@ routes.get('/eventos/:id', EventosController.get)
 routes.post('/eventos', EventosController.create)
 routes.delete('/eventos/:id', EventosController.delete)
 routes.put('/eventos/:id', EventosController.update)
+routes.get('/eventos/:id/pessoas', EventosController.people)
 
 // rotas de pessoas
 routes.get('/pessoas', PessoasController.index)

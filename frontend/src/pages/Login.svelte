@@ -1,6 +1,8 @@
 <script>
   import axios from "axios";
-  import sha256 from "js-sha256";
+  import md5 from "md5";
+
+  import { fade } from "svelte/transition";
   import { navigate } from "svelte-routing";
 
   const logo = "/assets/celebracao.svg";
@@ -10,7 +12,7 @@
   let erro = "";
 
   async function logar() {
-    const senha_criptografada = sha256(senha);
+    const senha_criptografada = md5(senha);
 
     const dados = {
       email,
@@ -21,64 +23,70 @@
       const { data } = await axios.post("http://localhost:3333/login", dados);
       const { token } = data;
 
-      navigate("/eventos");
+      navigate("/eventos", { state: { email, token } });
     } catch (error) {
       erro = "Usuário ou senha inválidos";
     }
   }
+
+  function hide() {
+    erro = "";
+  }
 </script>
 
 <style>
-  .main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .card {
-    width: 320px;
-  }
-  .erro {
-    margin-top: 20px;
-  }
   .logo {
-    margin-top: 80px;
+    margin-top: 30px;
     margin-bottom: 10px;
   }
 </style>
 
-<div class="container main">
-
-  <img class="logo" src={logo} alt="Logo" width="100" />
-  <h1>Eventos Legais</h1>
-
-  <div class="card">
-    <div class="card-body">
-      <form>
-        <div class="form-group">
+<div class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-4 has-text-centered">
+        <div>
+          <img class="logo" src={logo} alt="Logo" width="100" />
+        </div>
+        <div class="is-size-3 has-text-weight-bold">Eventos Legais</div>
+      </div>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-4 has-text-centered">
+        <div class="field">
           <input
             bind:value={email}
             type="email"
-            placeholder="Email"
-            class="form-control" />
+            class="input"
+            placeholder="Email" />
         </div>
-        <div class="form-group">
+        <div class="field">
           <input
             bind:value={senha}
             type="password"
-            placeholder="Senha"
-            class="form-control" />
+            class="input"
+            placeholder="Senha" />
         </div>
-        <input
-          on:click={logar}
-          type="button"
-          value="Entrar"
-          class="btn btn-primary" />
-      </form>
+        <button on:click={logar} class="button is-primary is-fullwidth">
+          Entrar
+        </button>
+      </div>
     </div>
-  </div>
 
-  {#if erro}
-    <div class="alert alert-danger erro">{erro}</div>
-  {/if}
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-4 has-text-centered">
+          {#if erro}
+            <div
+              class="notification is-warning"
+              transition:fade={{ duration: 300 }}>
+              <button on:click={hide} class="delete" />
+              {erro}
+            </div>
+          {/if}
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>

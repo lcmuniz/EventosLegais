@@ -1,4 +1,4 @@
-const crypto = require('crypto')
+const md5 = require('md5')
 
 const connection = require('../connection')
 
@@ -19,10 +19,7 @@ module.exports = {
 
     const data = new Date().getTime()
 
-    const token = crypto
-      .createHash('sha256')
-      .update(email + senha + data)
-      .digest('hex')
+    const token = md5(email + senha + data)
 
     res.json({ token })
   },

@@ -1,6 +1,6 @@
 const crypto = require('crypto')
 
-const sha256 = require('js-sha256')
+const md5 = require('md5')
 
 const connection = require('../connection')
 
@@ -36,7 +36,7 @@ module.exports = {
 
     const { senha } = pessoa
 
-    const senha_crypto = sha256(senha)
+    const senha_crypto = md5(senha)
 
     await connection('pessoas').insert({
       id,
@@ -66,7 +66,7 @@ module.exports = {
 
     let senha_crypto
     if (senha) {
-      senha_crypto = sha256(senha)
+      senha_crypto = md5(senha)
     } else {
       senha_crypto = pessoa.senha
     }

@@ -92,4 +92,25 @@ module.exports = {
 
     res.status(204).send()
   },
+  // obtem as pessoas que estao em um evento
+  async people(req, res) {
+    const { id } = req.params
+
+    const evento = await connection('eventos').where('id', id).first()
+
+    if (evento === undefined) {
+      res.status(404).send()
+      return
+    }
+
+    const pessoas = await connection('eventos_pessoas')
+      .join('pessoas', 'pessoas.id', '=', 'eventos_pessoas.id_pessoa')
+      .select(['pessoas.*'])
+      .where('eventos_pessoas.id_evento', id)
+
+    // inclui o id do evento no cabeçalho da resposta
+    res.header('X-Id-Evento', id)
+
+    res.json(pessoas)
+  },
 }
