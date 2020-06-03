@@ -2,12 +2,21 @@
   import { onMount } from "svelte";
   import axios from "axios";
   import { link, navigate } from "svelte-routing";
-
   import Evento from "../components/Evento.svelte";
+  import Header from "../components/Header.svelte";
 
-  const { email, token } = history.state;
+  let textoPesquisa = "";
 
   let eventos = [];
+
+  async function pesquisar() {
+    const response = await axios.post("http://localhost:3333/eventos/search", {
+      texto: textoPesquisa
+    });
+    eventos = response.data;
+  }
+
+  const { id_pessoa, email, token } = history.state;
 
   onMount(async () => {
     const response = await axios.get("http://localhost:3333/eventos");
@@ -15,33 +24,32 @@
   });
 </script>
 
-<section class="hero is-primary">
-  <div class="hero-body">
-    <h1 class="title">Eventos Legais</h1>
-  </div>
-  <div class="hero-foot" />
-
-</section>
-<div id="navbarMenuHeroC" class="navbar-menu has-background-light">
-  <div class="navbar-start">
-    <a href="/eventos" use:link class="navbar-item is-active">Início</a>
-    <a class="navbar-item">Novo Evento</a>
-    <a class="navbar-item">Logout</a>
-  </div>
-  <div class="navbar-end is-vcentered">
-    <span class="navbar-item">{email}</span>
-  </div>
-</div>
+<Header {id_pessoa} {email} {token} />
 
 <div class="section">
   <div class="container">
+
+    <div class="field has-addons">
+      <div class="control">
+        <input
+          class="input is-fullwidth"
+          type="text"
+          bind:value={textoPesquisa} />
+      </div>
+      <div class="control">
+        <a class="button is-info" on:click={pesquisar}>Pesquisar</a>
+      </div>
+    </div>
+
+    <br />
+    <br />
 
     <div class="columns is-multiline">
 
       {#each eventos as evento}
         <div class="column is-4">
 
-          <Evento {evento} />
+          <Evento {evento} {id_pessoa} />
 
         </div>
       {/each}

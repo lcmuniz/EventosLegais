@@ -21,9 +21,9 @@
 
     try {
       const { data } = await axios.post("http://localhost:3333/login", dados);
-      const { token } = data;
+      const { id_pessoa, token } = data;
 
-      navigate("/eventos", { state: { email, token } });
+      navigate("/eventos", { state: { id_pessoa, email, token } });
     } catch (error) {
       erro = "Usuário ou senha inválidos";
     }

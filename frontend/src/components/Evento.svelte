@@ -1,5 +1,15 @@
 <script>
+  import axios from "axios";
+
   export let evento;
+  export let id_pessoa;
+
+  async function inscrever() {
+    await axios.post("http://localhost:3333/inscricao", {
+      id_evento: evento.id,
+      id_pessoa
+    });
+  }
 </script>
 
 <div class="card">
@@ -25,7 +35,7 @@
   </div>
   <div class="card-footer">
 
-    <button class="button is-danger is-fullwidth">
+    <button on:click={inscrever} class="button is-danger is-fullwidth">
       <span class="icon">
         <i class="far fa-heart" />
       </span>

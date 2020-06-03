@@ -14,6 +14,7 @@ routes.post('/eventos', EventosController.create)
 routes.delete('/eventos/:id', EventosController.delete)
 routes.put('/eventos/:id', EventosController.update)
 routes.get('/eventos/:id/pessoas', EventosController.people)
+routes.post('/eventos/search', EventosController.search)
 
 // rotas de pessoas
 routes.get('/pessoas', PessoasController.index)

@@ -21,6 +21,8 @@ module.exports = {
 
     const token = md5(email + senha + data)
 
-    res.json({ token })
+    await connection('pessoas_tokens').insert({ id_pessoa: pessoa.id, token })
+
+    res.json({ id_pessoa: pessoa.id, token })
   },
 }

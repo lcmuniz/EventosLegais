@@ -41,6 +41,24 @@ module.exports = {
   async create(req, res) {
     const evento = req.body
 
+    const token = req.headers['x-token']
+
+    if (token === undefined) {
+      res.status(401).send()
+      return
+    }
+
+    const pt = await connection('pessoas_tokens')
+      .select('*')
+      .where('id_pessoa', '=', evento.id_pessoa)
+      .where('token', '=', token)
+      .first()
+
+    if (pt === undefined) {
+      res.status(401).send()
+      return
+    }
+
     const id = crypto.randomBytes(4).toString('HEX')
 
     await connection('eventos').insert({
@@ -112,5 +130,26 @@ module.exports = {
     res.header('X-Id-Evento', id)
 
     res.json(pessoas)
+  },
+
+  async search(req, res) {
+    const { texto } = req.body
+
+    const eventos = await connection('eventos')
+      .join('pessoas', 'pessoas.id', '=', 'eventos.id_pessoa')
+      .select([
+        'eventos.*',
+        'pessoas.cpf',
+        'pessoas.nome as nome_pessoa',
+        'pessoas.dataNascimento',
+        'pessoas.email',
+        'pessoas.whatsapp',
+        'pessoas.cidade as cidade_pessoa',
+        'pessoas.estado as estado_pessoa',
+        'pessoas.imagem as imagem_pessoa',
+      ])
+      .where('eventos.nome', 'like', '%' + texto + '%')
+
+    res.json(eventos)
   },
 }
